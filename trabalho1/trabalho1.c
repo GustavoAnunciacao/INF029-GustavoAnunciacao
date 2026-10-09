@@ -304,7 +304,56 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int idxPosicoes = 0;
+
+    int tamTexto = 0;
+    while (strTexto[tamTexto] != '\0') {
+        tamTexto++;
+    }
+
+    int tamBusca = 0;
+    while (strBusca[tamBusca] != '\0') {
+        tamBusca++;
+    }
+
+    if (tamBusca == 0 || tamBusca > tamTexto) {
+        return 0;
+    }
+
+    int posCharVisivel = 1;
+
+    for (int i = 0; i <= tamTexto - tamBusca; i++) {
+        // Ignora bytes de continuação de caracteres UTF-8 acentuados(unica maneira que encontrei para tratar erros do windows)
+        if ((unsigned char)strTexto[i] >= 0x80 && (unsigned char)strTexto[i] <= 0xBF) {
+            continue;
+        }
+
+        int achou = 1;
+        for (int j = 0; j < tamBusca; j++) {
+            if (strTexto[i + j] != strBusca[j]) {
+                achou = 0;
+                break;
+            }
+        }
+
+        if (achou == 1) {
+            int tamBuscaVisivel = 0;
+            for (int k = 0; k < tamBusca; k++) {
+                if (!((unsigned char)strBusca[k] >= 0x80 && (unsigned char)strBusca[k] <= 0xBF)) {
+                    tamBuscaVisivel++;
+                }
+            }
+
+            posicoes[idxPosicoes] = posCharVisivel;
+            posicoes[idxPosicoes + 1] = posCharVisivel + tamBuscaVisivel - 1;
+
+            idxPosicoes += 2;
+            qtdOcorrencias++;
+        }
+
+        posCharVisivel++;
+    }
 
     return qtdOcorrencias;
 }
@@ -321,8 +370,15 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
+int numInvertido = 0;
 
-    return num;
+    while (num > 0) {
+        int digito = num % 10;                     // Pega o último dígito
+        numInvertido = (numInvertido * 10) + digito; // Adiciona o dígito ao número invertido
+        num = num / 10;                            // Remove o último dígito do número original
+    }
+
+    return numInvertido;
 }
 
 /*
