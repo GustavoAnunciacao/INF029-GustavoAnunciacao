@@ -159,27 +159,86 @@ int q1(char data[])
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
 
-    //calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
 
-    if (q1(datainicial) == 0){
-      dma.retorno = 2;
-      return dma;
-    }else if (q1(datafinal) == 0){
-      dma.retorno = 3;
-      return dma;
-    }else{
-      //verifique se a data final não é menor que a data inicial
-      
-      //calcule a distancia entre as datas
+    //Valida data inicial
+    if (q1(datainicial) == 0) {
+        dma.retorno = 2; // Data inicial inválida
+        return dma;
+    } 
 
-
-      //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-      
+    // Valida data final
+    if (q1(datafinal) == 0) {
+        dma.retorno = 3; // Data final inválida
+        return dma;
     }
-    
+
+    // Extrai os valores numéricos das datas usando quebraData
+    DataQuebrada dqIni = quebraData(datainicial);
+    DataQuebrada dqFin = quebraData(datafinal);
+
+    int dIni = dqIni.iDia, mIni = dqIni.iMes, aIni = dqIni.iAno;
+    int dFin = dqFin.iDia, mFin = dqFin.iMes, aFin = dqFin.iAno;
+
+    // Ajusta o ano se ele tiver apenas 2 dígitos
+    if (aIni < 100) aIni += 2000;
+    if (aFin < 100) aFin += 2000;
+
+    // Testa se datainicial > datafinal
+    if (aIni > aFin || 
+       (aIni == aFin && mIni > mFin) || 
+       (aIni == aFin && mIni == mFin && dIni > dFin)) {
+        dma.retorno = 4; // datainicial é maior que datafinal
+        return dma;
+    }
+
+    // Cálculo da diferença de Dias, Meses e Anos
+    int qtdDias, qtdMeses, qtdAnos;
+
+    // Se o dia final for menor que o inicial, pede emprestado do mês anterior
+    if (dFin < dIni) {
+        int mAnterior = mFin - 1;
+        int aAnterior = aFin;
+        if (mAnterior == 0) {
+            mAnterior = 12;
+            aAnterior--;
+        }
+
+        // Descobre os dias do mês anterior
+        int diasNoMesAnterior;
+        if (mAnterior == 2) {
+            if ((aAnterior % 4 == 0 && aAnterior % 100 != 0) || (aAnterior % 400 == 0))
+                diasNoMesAnterior = 29;
+            else
+                diasNoMesAnterior = 28;
+        } else if (mAnterior == 4 || mAnterior == 6 || mAnterior == 9 || mAnterior == 11) {
+            diasNoMesAnterior = 30;
+        } else {
+            diasNoMesAnterior = 31;
+        }
+
+        dFin += diasNoMesAnterior;
+        mFin--;
+    }
+
+    qtdDias = dFin - dIni;
+
+    // Se o mês final ficou menor que o inicial, pede emprestado do ano
+    if (mFin < mIni) {
+        mFin += 12;
+        aFin--;
+    }
+
+    qtdMeses = mFin - mIni;
+    qtdAnos = aFin - aIni;
+
+    // Preenche o resultado na struct
+    dma.qtdDias = qtdDias;
+    dma.qtdMeses = qtdMeses;
+    dma.qtdAnos = qtdAnos;
+    dma.retorno = 1; // Sucesso!
+
+    return dma;
 }
 
 /*
