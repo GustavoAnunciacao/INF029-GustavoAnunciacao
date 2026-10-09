@@ -253,7 +253,36 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int i = 0;
+
+    char charBusca = c;
+
+    // Se n for Case Sensitive e for maiúscula (A-Z), converte para minuscula
+    if (isCaseSensitive != 1) {
+        if (charBusca >= 'A' && charBusca <= 'Z') {
+            charBusca = charBusca + 32;
+        }
+    }
+
+    // Varre o texto caractere por caractere
+    while (texto[i] != '\0') {
+        char charAtual = texto[i];
+
+        // Se n for Case Sensitive e for maiúscula (A-Z), converte para minuscula
+        if (isCaseSensitive != 1) {
+            if (charAtual >= 'A' && charAtual <= 'Z') {
+                charAtual = charAtual + 32;
+            }
+        }
+
+        // Se encontrou o caractere correspondente
+        if (charAtual == charBusca) {
+            qtdOcorrencias++;
+        }
+
+        i++;
+    }
 
     return qtdOcorrencias;
 }
