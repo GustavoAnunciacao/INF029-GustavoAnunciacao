@@ -373,9 +373,9 @@ int q5(int num)
 int numInvertido = 0;
 
     while (num > 0) {
-        int digito = num % 10;                     // Pega o último dígito
-        numInvertido = (numInvertido * 10) + digito; // Adiciona o dígito ao número invertido
-        num = num / 10;                            // Remove o último dígito do número original
+        int digito = num % 10;                     // Pega o ultimo dígito
+        numInvertido = (numInvertido * 10) + digito; // Adiciona o dígito ao numero invertido
+        num = num / 10;                            // Remove o ultimo dígito do número original
     }
 
     return numInvertido;
@@ -393,7 +393,32 @@ int numInvertido = 0;
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+   int qtdOcorrencias = 0;
+
+    // Descobre quantos dígitos tem o numerobusca e calcula o divisor (10^N)
+    int tempSearch = numerobusca;
+    int divisor = 1;
+
+    while (tempSearch > 0) {
+        divisor *= 10;
+        tempSearch /= 10;
+    }
+
+    // Varre o numerobase da direita para a esquerda pegando fatias do mesmo tamanho de numerobusca
+    int tempNumber = numerobase;
+
+    while (tempNumber >= numerobusca) {
+        // Pega os últimos N dígitos do tempNumber
+        int fatia = tempNumber % divisor;
+
+        if (fatia == numerobusca) {
+            qtdOcorrencias++;
+        }
+
+        // Anda 1 dígito para a esquerda
+        tempNumber /= 10;
+    }
+
     return qtdOcorrencias;
 }
 
