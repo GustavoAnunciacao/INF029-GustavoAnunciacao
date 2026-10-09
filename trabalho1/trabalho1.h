@@ -10,10 +10,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome:
-//  email:
-//  Matrícula:
-//  Semestre:
+//  Nome: Gustavo Soares de Jesus Anunciação
+//  email: 20261160012@ifba.edu.br
+//  Matrícula: 20261160012
+//  Semestre: 2
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021

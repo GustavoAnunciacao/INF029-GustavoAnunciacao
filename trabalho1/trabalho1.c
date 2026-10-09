@@ -10,10 +10,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome:
-//  email:
-//  Matrícula:
-//  Semestre:
+//  Nome: Gustavo Soares de Jesus Anunciação
+//  email: 20261160012@ifba.edu.br
+//  Matrícula: 20261160012
+//  Semestre: 2
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021 - 19/08/2016 - 17/10/2025
@@ -91,17 +91,53 @@ int teste(int a)
  */
 int q1(char data[])
 {
-  int datavalida = 1;
+ // Usa a função que o professor criou para separar dia, mês e ano
+    DataQuebrada dq = quebraData(data);
 
-  //quebrar a string data em strings sDia, sMes, sAno
+    // Se o formato da string não tinha as barras ou tamanho correto
+    if (dq.valido == 0) {
+        return 0;
+    }
 
+    int dia = dq.iDia;
+    int mes = dq.iMes;
+    int ano = dq.iAno;
 
-  //printf("%s\n", data);
+    // Se o ano veio com apenas 2 dígitos (ex: 15 para 2015)
+    if (ano < 100) {
+        ano += 2000;
+    }
 
-  if (datavalida)
-      return 1;
-  else
-      return 0;
+    // Validações básicas de mês e ano
+    if (mes < 1 || mes > 12) {
+        return 0;
+    }
+    if (dia < 1 || dia > 31) {
+        return 0;
+    }
+
+    // Descobre quantos dias o mês tem
+    int diasNoMes;
+
+    if (mes == 2) {
+        // Regra do Ano Bissexto
+        if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
+            diasNoMes = 29;
+        } else {
+            diasNoMes = 28;
+        }
+    } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
+        diasNoMes = 30; // Meses de 30 dias
+    } else {
+        diasNoMes = 31; // Meses de 31 dias
+    }
+
+    // Checa se o dia respeita o limite daquele mês
+    if (dia > diasNoMes) {
+        return 0; 
+    }
+
+    return 1; 
 }
 
 

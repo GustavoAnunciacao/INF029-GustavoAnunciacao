@@ -32,10 +32,10 @@ void testQ7();
 
 int main()
 {
-    testSomar();
-    testFatorial();
-    /*testQ1();
-    testQ2();
+    //testSomar();
+    //testFatorial();
+    testQ1();
+    /*testQ2();
     testQ3();
     testQ4();
     testQ5();
